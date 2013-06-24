@@ -1,0 +1,67 @@
+Linux(Thanks to Chunis Deng chunchengfh at gmail.com)
+
+Note:
+	1. below steps is tested in Debian/Ubuntu
+	2. '>>' means run the commands in terminal.
+
+Install steps:
+
+1. install lua development kit(libs/header files)
+   >> sudo apt-get install liblua5.1-0-dev
+   
+2. install lua binaray
+   >> sudo apt-get install lua5.1
+   
+3. install luasocket(2.0.2)(license same as lua)
+   >> sudo apt-get install liblua5.1-socket-dev
+   
+4. install luabitop(license same as lua)
+   >> sudo apt-get install liblua5.1-bitop-dev 
+   or try below steps:
+   download bitop: http://bitop.luajit.org/download/LuaBitOp-1.0.1.tar.gz,
+   unzip it, and change Makefile at line 6 "INCLUDES= -I/usr/local/include" to 
+	INCLUDES= -I/usr/include/lua5.1
+   then run:
+   >> make && sudo make install
+
+5. install lualogging(opensource)
+   >> sudo apt-get install liblua5.1-logging
+   
+6. download LuaXml(license same as lua)
+   >> sudo cp luaxml/LuaXml.lua /usr/share/lua/5.1/
+   >> sudo cp luaxml/LuaXML_lib.so /usr/lib/lua/5.1/
+   
+7. download iup3.5 (iup-3.5_Linux26g4_lib.tar.gz) from:
+	http://sourceforge.net/projects/iup/files/3.5/Linux%20Libraries/ 
+   (license some like MIT)
+   >> sudo ./install
+   >> sudo ./install_dev
+   >> sudo ./config_lua_module
+   
+8. compile blowfish library and lua stringconv library and install both:
+   >> cd deps && make && sudo make install
+   You may need to change 'LUALIB's value in deps/Makefile
+
+since luafeiq support file-recv, it needs luatask:
+9.download luatask and copy the library file to library path
+   >> sudo cp task.so /usr/lib/lua/5.1
+Detailed steps:
+  a.download luatask (http://luaforge.net/frs/download.php/2725/LuaTask-1.6.4.tgz)
+    and unzip it to a directory (take '/tmp' as example)
+  b. build task.so with below commands:
+	[ch@chx tmp]$ cd LuaTask-1.6.4/
+	[ch@chx tmp]$ rmdir lua5.1/include/
+	[ch@chx LuaTask-1.6.4]$ ln -s /usr/include/lua5.1/ `pwd`/lua5.1/include
+	[ch@chx LuaTask-1.6.4]$ cd build/ix/module/
+	[ch@chx module]$ make
+  c. >> sudo cp /tmp/LuaTask-1.6.4/lua5.1/lib/task.so /usr/lib/lua/5.1
+
+since luafeiq need to create directory, it needs luafilesystem:
+10. >> sudo apt-get install liblua5.1-filesystem-dev
+or with below command:
+     >> sudo luarocks install luafilesystem
+
+
+Windows:
+1. download and install lua windows install binary
+2. download IUP3.2 windows binrary and copy these dll files in lua/clibs/

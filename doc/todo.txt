@@ -1,0 +1,14 @@
+
+2.11.2011
+Fix file path parse error in Windows.
+
+2.10.2011
+Fix some crashed bugs later
+Fix more safe when send/recv task exits
+
+1.31.2011
+Test test string encoding between linux/windows
+
+1.30.2011
+Fix when a user got online after some chating, his chatlog removed
+

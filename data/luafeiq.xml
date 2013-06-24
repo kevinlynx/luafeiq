@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<luafeiq>
+    <loginname value="Adminstrator" />
+    <pcname value="PC1024" />
+    <nickname value="张敏" />
+    <groupname value="程序" />
+    <macaddress value="0022155B1925" />
+    <savedir value="../recvfile/" />
+    <focusedgroups>
+        <group number="BFA6CAC7" name="程序"/>
+        <group number="F8916B47" name="ABC"/>
+    </focusedgroups>
+</luafeiq>
+
+

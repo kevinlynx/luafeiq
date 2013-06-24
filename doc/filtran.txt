@@ -1,0 +1,37 @@
+IP messager File transfer implementation
+
+传送文件和一般的消息在相同的界面中体现，即TRecvDlg。发送文件时，使用了普通消息的
+类型，如果会发送文件，则会加上IPMSG_FILEATTACHOPT标志。消息尾以'\0'作为分割，后
+面跟上文件信息。(recvdlg.cpp TRecvDlg::TRecvDlg)
+
+DecodeShareMsg初步判定为解析发送文件的字符串函数。文件信息格式大致分为如下：
+do
+    id_num : filename : size_hexnum : time_hex : file_attr_hex \a
+until end
+每一个文件后以\a作为分割符。通过file_attr区分是单个文件还是目录。
+
+在确定接收文件后，程序向文件发送方发起TCP连接。(TRecvDlg::ConnectRecvFile)
+连接成功则发送消息给对方：
+IPMSG_GETDIRFILES packet_no_hex:id_num_hex:OFFSET_hex
+IPMSG_GETFILEDATA packet_no_hex:id_num_hex
+然后开启线程，准备接收文件数据(RecvFileThread)。线程中根据是接收文件还是文件夹
+分别调用TRecvDlg::RecvFile/TRecvDlg::RecvDirFile。
+
+接收完后通过窗口消息通知主线程，主线程释放本次接收文件的资源，包括套接字和线程，
+然后检测是否还有未接受文件，如果有则重复之前的流程继续接收(SaveFile)。
+
+IP messager在启动时就建立了TCP服务器，绑定端口与UDP端口相同。
+在收到文件接收方发送的消息时，就直接建立线程给对方发送文件数据。(StartSendFile)
+
+在开始传输文件的过程中，消息传输只携带文件数据，偏移量由各自保存。所以在开始
+接收文件时，接收方发过去的偏移量完全没用。
+
+接收文件夹时，则是先接收文件信息，然后接收文件数据，直到套接字关闭，文件信息包括
+：info_size : fname : size_hex : attr : ext_attr(in key=value format)
+接收过程大致为：
+while read socket success
+    info_size : fname : size_hex : attr : ext_attr(in key=value format)
+	read file data
+end
+
+

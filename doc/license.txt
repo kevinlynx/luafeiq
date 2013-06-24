@@ -1,0 +1,7 @@
+
+luaFeiq is Copyright2011 Kevin Lynx. It's free software, released under
+the MIT/X license which same license as the Lua core.
+
+Also, you'd better check out the license about these dependent libraries 
+licnese: IUP, luasocket, lualogging, luabitop, luaxml.
+
